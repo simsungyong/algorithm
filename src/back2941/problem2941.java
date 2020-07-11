@@ -8,38 +8,53 @@ import java.util.StringTokenizer;
 public class problem2941 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        String input = st.nextToken();
-        int sum = 0;
-        int skip = 0;
 
-        for(int i=0; i<input.length(); i++){
-            if(skip==0){
-                if(input.charAt(i) == 'c' || input.charAt(i) == 'l' || input.charAt(i) == 'n' || input.charAt(i) == 's' || input.charAt(i) == 'z' ){
-                    skip =1;
-                    sum++;
+        String input = br.readLine();
+        int length = input.length();
+        input +="00";
+
+        int count=0;
+        int index=0;
+        while(index<length){
+            if(input.charAt(index)=='c'){
+                if(input.charAt(index+1)=='=' ||input.charAt(index+1)=='-'){
+                    count++;
+                    index = index+2;
+                }else{
+                    count++;
+                    index++;
                 }
-                else if(input.charAt(i) == 'd'){
-                    if(input.charAt(i+1) == 'z'){
-                        sum++;
-                        skip =2;
-                    }else if(input.charAt(i+1) == '-'){
-                        sum++;
-                        skip =1;
-                    }else{
-                        sum++;
-                    }
+            }else if(input.charAt(index)=='d' ){
+                if(input.charAt(index+1)=='z'  &&input.charAt(index+2)=='='){
+                    count++;
+                    index = index+3;
+                }else if(input.charAt(index+1)=='-' ){
+                    count++;
+                    index = index+2;
                 }
                 else{
-                    sum++;
+                    count++;
+                    index++;
                 }
             }
+
+            else if((input.charAt(index)=='s' || input.charAt(index)=='z') && input.charAt(index+1)=='=' ){
+                count++;
+                index = index+2;
+            }
+            else if((input.charAt(index)=='l' || input.charAt(index)=='n') && input.charAt(index+1)=='j' ){
+                count++;
+                index = index+2;
+            }
+
             else{
-                skip = skip - 1;
+                count++;
+                index++;
             }
         }
 
-        System.out.println(sum);
 
+        System.out.println(count);
+        br.close();
     }
-}
+}//런타임에러조심
