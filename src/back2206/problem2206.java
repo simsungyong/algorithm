@@ -53,33 +53,8 @@ public class problem2206 {
         wall[0][0][0] = true;
         wall[0][0][1] = true;
          while(!q.isEmpty()){
-            Node cnt = q.poll();
-            for(int i=0; i<4; i++){
-                int next_x = cnt.x+dfsX[i];
-                int next_y = cnt.y+dfsY[i];
-                if(next_x>=0 && next_x <n && next_y>=0 && next_y<m){
-                    if(input[next_x][next_y]==0){
-                        if(!wall[next_x][next_y][0]){
-                            value[next_x][next_y] = value[cnt.x][cnt.y]+1;
-                            wall[next_x][next_y][0] = true;
-                            q.add(new Node(next_x,next_y,cnt.check));
-                        }
 
-
-                    }else{
-                        if(cnt.check==false && !wall[next_x][next_y][1]){
-                            wall[next_x][next_y][1] = true;
-                            value[next_x][next_y] = value[cnt.x][cnt.y]+1;
-                            q.add(new Node(next_x,next_y, true));
-
-                        }
-                    }
-                }
             }
-        }
-
-
-
 
     }
 }
