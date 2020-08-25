@@ -13,6 +13,7 @@ public class problem6118 {
     static int num;
     static int indexSmall;
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         st = new StringTokenizer(br.readLine());
@@ -20,9 +21,11 @@ public class problem6118 {
         m= Integer.parseInt(st.nextToken());
         list = new ArrayList[n+1];
         answer=0;
+
         for(int i=1; i<=n; i++){
             list[i] = new ArrayList<>();
         }
+
 
         for(int i=0; i<m; i++){
             st = new StringTokenizer(br.readLine());
@@ -65,6 +68,7 @@ public class problem6118 {
         for(int i=1; i<=n; i++){
             pq.add(new Node(i,distance[i]));
         }
+
         Node no = pq.poll();
         max = no.distance;
         indexSmall= no.index;
