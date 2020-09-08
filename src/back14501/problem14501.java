@@ -18,6 +18,7 @@ public class problem14501 {
             arr[1][i] = Integer.parseInt(st.nextToken());
         }
 
+
         for(int i =1; i<=n; i++) {
             int temp[] = Arrays.copyOfRange(result, 0, i);
             Arrays.sort(temp);
