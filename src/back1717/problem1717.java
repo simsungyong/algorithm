@@ -7,28 +7,73 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class problem1717 {
-    static int n,line;
-    static ArrayList<Integer> arr[];
+    static int arr[];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-        st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        line = Integer.parseInt(st.nextToken());
-        arr = new ArrayList[n+1];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        arr = new int[n+1];
         for(int i=0; i<=n; i++){
-            arr[i] = new ArrayList<>();
+            arr[i]=i;
         }
 
-        for(int i=0; i<line; i++){
+        for(int i=0; i<m; i++){
             st = new StringTokenizer(br.readLine());
-            int iszero = Integer.parseInt(st.nextToken());
+            int type = Integer.parseInt(st.nextToken());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            if(iszero==0){
-                arr[a].add(b);
-                arr[b].add(a);
+            if(type==0){
+                union(a,b);
+            }else{
+                if(isSameparent(a,b)){
+                    sb.append("YES\n");
+                }else{
+                    sb.append("NO\n");
+                }
+            }
+
+        }
+
+        System.out.println(sb.toString());
+    }
+
+    public static int find(int v){
+        if(arr[v]==v){
+            return v;
+        }else{
+            return arr[v] = find(arr[v]);
+        }
+    }
+
+    public static void union(int a, int b){
+        a = find(a);
+        b = find(b);
+
+        if(a != b){
+            if(a>b){
+                arr[a] = b;
+            }else{
+                arr[b] =a;
             }
         }
     }
+
+
+    public static boolean isSameparent(int a, int b){
+        a = find(a);
+        b = find(b);
+
+        if(a==b){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
+
 }
