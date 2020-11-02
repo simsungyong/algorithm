@@ -4,80 +4,77 @@ package back1197;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class problem1197 {
-    static ArrayList<Node> arr[];
-    static boolean check[][];
-    static int arrmin[][];
+    static int n, line;
+    static int parents[];
+    static int sum = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        long answer = 0;
-        int num =0;
-        int n = Integer.parseInt(st.nextToken());
-        int line = Integer.parseInt(st.nextToken());
-        check = new boolean[n][n];
-        arrmin = new int[n][n];
-
-
-        arr = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = new ArrayList<>();
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        n = Integer.parseInt(st.nextToken());
+        line = Integer.parseInt(st.nextToken());
+        parents = new int[n + 1];
+        for (int i = 1; i <= n; i++) {
+            parents[i] = i;
         }
 
         for (int i = 0; i < line; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken())-1;
-            int b = Integer.parseInt(st.nextToken())-1;
-            int c = Integer.parseInt(st.nextToken());
-            arr[a].add(new Node(b, c));
-            arr[b].add(new Node(a, c));
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            q.add(new Node(s, e, v));
         }
-
-        Queue<Integer> q = new LinkedList<>();
-        q.add(0);
-
-        while (num != n-1) {
-            int temp = q.poll();
-            for (int i = 0; i < arr[temp].size(); i++) {
-                int next = arr[temp].get(i).to;
-                int v = arr[temp].get(i).v;
-                if (!check[temp][next]) {
-                    arrmin[temp][next] = v;
-                    arrmin[next][temp] = v;
-                    check[temp][next] = true;
-                    check[next][temp] = true;
-                    num++;
-                    answer+=v;
-                    q.add(next);
-
-
-                } else {
-                    if (arrmin[temp][next] > v || arrmin[next][temp] > v) {
-                        answer = answer - arrmin[temp][next]+v;
-                        arrmin[temp][next] = v;
-                        arrmin[next][temp] = v;
-                        q.add(next);
-                    }
-                }
+        while (!q.isEmpty()) {
+            Node tmp = q.poll();
+            if (find(tmp.s) == find(tmp.e)) {
+                continue;
             }
+
+            union(tmp.s, tmp.e);
+            sum += tmp.v;
+
         }
 
-        System.out.println(answer);
+        System.out.println(sum);
 
+    }
+
+    public static int find(int index) {
+
+        if (index == parents[index]) {
+            return index;
+        } else {
+            return parents[index] = find(parents[index]);
+        }
+    }
+
+    public static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) {
+            return;
+        } else {
+            parents[a] = b;
+        }
     }
 }
 
 
-class Node {
-    int to,v;
-    Node(int to, int v){
-        this.to =to;
+class Node implements Comparable<Node>{
+    int s,e,v;
+    Node(int s, int e, int v){
+        this.s =s;
         this.v=v;
+        this.e =e;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.v-o.v;
     }
 }
