@@ -1,84 +1,78 @@
 package testest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class problem111 {
-    static int five_pin;
-    static int e_pin;
-    static int both_pin;
-    static long answer=0;
-    static int num=0;
+    static int answer=Integer.MAX_VALUE;
+    static boolean check[];
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        PriorityQueue<Node> q= new PriorityQueue<>();
-        five_pin = Integer.parseInt(st.nextToken());
-        e_pin = Integer.parseInt(st.nextToken());
-        both_pin = Integer.parseInt(st.nextToken());
+    public static void main(String[] args) {
+        String a[] = {"[404]James","[405]andy,yong,sun","[235]sim,hae,jun"};
 
-        int n = Integer.parseInt(br.readLine());
-        for(int i=0; i<n; i++){
-            st = new StringTokenizer(br.readLine());
-            int cost = Integer.parseInt(st.nextToken());
-            int kind = Integer.parseInt(st.nextToken());
-            q.add(new Node(cost,kind));
-        }
+        sol(a,308);
+    }
+
+    public static void sol(String a[], int target){
+        HashMap<String, Integer> namenum = new HashMap<>();
+        HashMap<String, Integer> nameroom = new HashMap<>();
+        Set<String> except = new HashSet<>();
+
+        for(int i=0; i<a.length; i++){
+
+            String num = a[i].split("]")[0];
+            int room = Integer.parseInt(num.substring(1,num.length()));
 
 
+            String namearr []= a[i].split("]")[1].split(",");
 
-
-
-        for(int i=0; i<n; i++){
-            Node cnt = q.poll();
-            if(cnt.kind==0){
-                if(five_pin>0){
-                    answer+=cnt.x;
-                    num++;
-                    five_pin = five_pin-1;
-                }else{
-                    if(both_pin>0){
-                        answer+=cnt.x;
-                        num++;
-                        both_pin = both_pin-1;
-                    }
+            if(room==target){
+                for(int k=0; k<namearr.length; i++){
+                    except.add(namearr[k]);
                 }
-            }else if(cnt.kind==1){
-                if(e_pin>0){
-                    answer+=cnt.x;
-                    num++;
-                    e_pin = e_pin-1;
-                }else{
-                    if(both_pin>0){
-                        answer+=cnt.x;
-                        num++;
-                        both_pin = both_pin-1;
+            }else{
+                for(int k=0; k<namearr.length; i++){
+                    if(namenum.containsKey(namearr[k])){
+                        namenum.put(namearr[k],namenum.get(namearr[k])+1);
+                    }else{
+                        namenum.put(namearr[k],1);
+                    }
+                    if(nameroom.containsKey(namearr[k])){
+                        if(Math.abs(target-room) < Math.abs(nameroom.get(namearr[k])-target)){
+                            nameroom.put(namearr[k], room);
+                        }
+                    }else{
+                        nameroom.put(namearr[k],room);
                     }
                 }
             }
         }
 
-        System.out.print(num+" "+answer);
-
-
-
-
 
     }
+
+
 }
 
 class Node implements Comparable<Node>{
-    int x;
-    int kind;
-    Node(int x, int kind){
-        this.x=x;
-        this.kind= kind;
+    String name;
+    int room,num,target;
+
+    Node(String name, int room, int num){
+        this.name = name;
+        this.room = room;
+        this.num = num;
     }
     @Override
     public int compareTo(Node o) {
-        return this.x-o.x;
+        if(this.num<o.num){
+            return -1;
+        }else if(this.num==o.num){
+            if(Math.abs(this.target-this.room) < Math.abs(o.target-o.room)){
+                return -1;
+            }else{
+                return 1;
+            }
+        }
+        else return 1;
     }
 }
